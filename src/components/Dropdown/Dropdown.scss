@@ -1,0 +1,22 @@
+.dropdown-userInfo {
+  max-width: 600px;
+  margin: 0 auto;
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  color: #f7dc6f;
+  font-family: 'Comfortaa', sans-serif;
+  b {
+    font-weight: bold;
+    color: #f1c40f;
+  }
+  p {
+    margin: 15px 0;
+  }
+}
+textarea {
+  background-color: #1b2631;
+  color: #f7dc6f;
+  font-family: 'Comfortaa', sans-serif;
+  border: 1px solid rgba(241, 196, 15, 0.5);
+}

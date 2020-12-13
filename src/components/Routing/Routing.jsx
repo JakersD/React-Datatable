@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import App from './App';
-import { bigUrl, littleUrl } from './helper/url';
+import Datatable from '../Datatable/Datatable';
+import { bigUrl, littleUrl } from '../../helper/url';
+
+import Loadingwheel from './Loadingwheel/Loadingwheel';
 
 export default function Routing() {
-  const [, setLoading] = useState('false');
+  const [loading, setLoading] = useState('false');
   const [loadedData, setLoadedData] = useState('');
 
   async function littleData() {
@@ -21,16 +23,17 @@ export default function Routing() {
   return (
     <>
       {loadedData === '' && (
-        <>
-          <button onClick={littleData} className="LittleData">
+        <div className="buttonContainer">
+          <button onClick={littleData} className="littleData">
             Мало данных
           </button>
           <button onClick={bigData} className="bigData">
             Много данных
           </button>
-        </>
+          {loading === 'true' && <Loadingwheel />}
+        </div>
       )}
-      {loadedData !== '' && <App loadedData={loadedData} />}
+      {loadedData !== '' && <Datatable loadedData={loadedData} />}
     </>
   );
 }

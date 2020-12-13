@@ -1,0 +1,108 @@
+.Table {
+  display: table;
+  width: 100%;
+  background-color: #1b2631;
+  color: #f7dc6f;
+  .THeading {
+    background-color: #6c8bad;
+    color: #fff;
+    display: table-header-group;
+    font-weight: bold;
+    .TRow {
+      .THead {
+        transition: 0.2s;
+        cursor: pointer;
+        &:hover {
+          background-color: #8ca5bf;
+          transition: 0.2s;
+        }
+      }
+    }
+  }
+  .TBody {
+    display: table-row-group;
+    transition: 0.2s;
+    cursor: pointer;
+    &:hover {
+      background-color: #2d3f52;
+      transition: 0.2s;
+    }
+  }
+  .TRow {
+    display: table-row;
+    .TCell,
+    .THead {
+      border: 1px solid #999999;
+      display: table-cell;
+      padding: 3px 10px;
+      .THead-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+  }
+}
+.rc-pagination {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.rc-pagination-item {
+  border: 1px solid #f7dc6d;
+  background-color: #1b2631;
+  a {
+    color: #f7dc6d;
+  }
+  &:hover {
+    border-color: #f7dc6d;
+    background-color: #2d3f52;
+    a {
+      color: #f7dc6d;
+    }
+  }
+}
+
+.rc-pagination-item-active {
+  background-color: #2d3f52;
+  border-color: #f1c40f;
+  &:hover {
+    border-color: #f1c40f;
+  }
+  &:focus {
+    border-color: #f1c40f;
+    a {
+      color: #f1c40f;
+    }
+  }
+  a {
+    color: #f1c40f;
+  }
+}
+
+.rc-pagination-disabled {
+  .rc-pagination-item-link {
+    border-color: #fcf3cf !important;
+    color: #fcf3cf !important;
+    background-color: #1b2631 !important;
+  }
+}
+
+.rc-pagination-prev,
+.rc-pagination-next {
+  &:hover {
+    .rc-pagination-item-link {
+      color: #f1c40f;
+      border-color: #f1c40f;
+      background-color: #2d3f52;
+    }
+  }
+  .rc-pagination-item-link {
+    background-color: #1b2631;
+    color: #f1c40f;
+    border-color: #f1c40f;
+  }
+}
+.rc-pagination-item-link {
+  background-color: #1b2631;
+}
