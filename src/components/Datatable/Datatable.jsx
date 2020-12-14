@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 import Pagination from 'rc-pagination';
 import locale from 'rc-pagination/lib/locale/ru_RU';
 
 import Dropdown from '../Dropdown/Dropdown';
 import SearchForm from '../Searchform/SearchForm';
+import DataAddForm from '../DataAddForm/DataAddForm';
 
-export default function App({ loadedData }) {
+export default function App({ loadedData, setLoadedData }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [currentData, setCurrentData] = useState([]);
   const [dataPerPage] = useState(20);
@@ -22,12 +23,15 @@ export default function App({ loadedData }) {
   const [lastType, setLastType] = useState('');
   const [sortedData, setSortedData] = useState([]);
 
-  const changeCurrentData = (data) => {
-    const indexOfLastData = currentPage * dataPerPage;
-    const indexOfFirstData = indexOfLastData - dataPerPage;
-    setCurrentData(data.slice(indexOfFirstData, indexOfLastData));
-    setPaginateData(data.length);
-  };
+  const changeCurrentData = useCallback(
+    (data) => {
+      const indexOfLastData = currentPage * dataPerPage;
+      const indexOfFirstData = indexOfLastData - dataPerPage;
+      setCurrentData(data.slice(indexOfFirstData, indexOfLastData));
+      setPaginateData(data.length);
+    },
+    [currentPage, dataPerPage]
+  );
 
   useEffect(() => {
     if (Q.length !== 0 && sortedData.length === 0) {
@@ -43,7 +47,7 @@ export default function App({ loadedData }) {
       return;
     }
     changeCurrentData(loadedData);
-  }, [currentPage]);
+  }, [currentPage, loadedData]);
 
   const paginationOnChange = (page) => {
     setCurrentPage(page);
@@ -54,106 +58,110 @@ export default function App({ loadedData }) {
     setCurrentUser(user);
   };
 
+  const sortingFunction = (type, classChanger, isNone) => {
+    if (typeOfSorting === 'none' || isNone) {
+      const loadedSortedDataId = loadedData.slice().sort((a, b) => a[type] - b[type]);
+      const filteredSortedDataId = filteredData.slice().sort((a, b) => a[type] - b[type]);
+      const loadedSortedData = loadedData.slice().sort((a, b) => {
+        if (a[type] < b[type]) return -1;
+        if (a[type] < b[type]) return 1;
+        return 1;
+      });
+      const filteredSortedData = filteredData.slice().sort((a, b) => {
+        if (a[type] < b[type]) return -1;
+        if (a[type] < b[type]) return 1;
+        return 1;
+      });
+      setTypeOfSorting('highToLow');
+      classChanger.classList.remove('disabled');
+      classChanger.classList.add('activeDown');
+      if (filteredData.length === 0) {
+        if (type === 'id') {
+          setSortedData(loadedSortedDataId);
+          changeCurrentData(loadedSortedDataId);
+          return;
+        }
+        setSortedData(loadedSortedData);
+        changeCurrentData(loadedSortedData);
+      } else {
+        if (type === 'id') {
+          setSortedData(filteredSortedDataId);
+          changeCurrentData(filteredSortedDataId);
+          return;
+        }
+        setSortedData(filteredSortedData);
+        changeCurrentData(filteredSortedData);
+      }
+      return;
+    }
+    if (typeOfSorting === 'highToLow') {
+      const loadedSortedDataId = loadedData
+        .slice()
+        .sort((a, b) => a[type] - b[type])
+        .reverse();
+      const filteredSortedDataId = filteredData
+        .slice()
+        .sort((a, b) => a[type] - b[type])
+        .reverse();
+      const loadedSortedData = loadedData
+        .slice()
+        .sort((a, b) => {
+          if (a[type] < b[type]) return -1;
+          if (a[type] < b[type]) return 1;
+          return 1;
+        })
+        .reverse();
+      const filteredSortedData = filteredData
+        .slice()
+        .sort((a, b) => {
+          if (a[type] < b[type]) return -1;
+          if (a[type] < b[type]) return 1;
+          return 1;
+        })
+        .reverse();
+      setTypeOfSorting('lowToHigh');
+      classChanger.classList.remove('activeDown');
+      classChanger.classList.add('activeUp');
+      if (filteredData.length === 0) {
+        if (type === 'id') {
+          setSortedData(loadedSortedDataId);
+          changeCurrentData(loadedSortedDataId);
+          return;
+        }
+        setSortedData(loadedSortedData);
+        changeCurrentData(loadedSortedData);
+      } else {
+        if (type === 'id') {
+          setSortedData(filteredSortedDataId);
+          changeCurrentData(filteredSortedDataId);
+        }
+        setSortedData(filteredSortedData);
+        changeCurrentData(filteredSortedData);
+      }
+    }
+    if (typeOfSorting === 'lowToHigh') {
+      setTypeOfSorting('none');
+      setSortedData([]);
+      document.querySelectorAll('.sorting').forEach((v) => (v.className = 'sorting disabled'));
+      if (filteredData.length === 0) {
+        changeCurrentData(loadedData);
+      } else {
+        changeCurrentData(filteredData);
+      }
+    }
+  };
+
   const sorting = (type) => {
-    const startSorting = (type, classChanger, isNone) => {
-      if (typeOfSorting === 'none' || isNone) {
-        const loadedSortedDataId = loadedData.slice().sort((a, b) => a[type] - b[type]);
-        const filteredSortedDataId = filteredData.slice().sort((a, b) => a[type] - b[type]);
-        const loadedSortedData = loadedData.slice().sort((a, b) => {
-          if (a[type] < b[type]) return -1;
-          if (a[type] < b[type]) return 1;
-        });
-        const filteredSortedData = filteredData.slice().sort((a, b) => {
-          if (a[type] < b[type]) return -1;
-          if (a[type] < b[type]) return 1;
-        });
-        setTypeOfSorting('highToLow');
-        classChanger.classList.remove('disabled');
-        classChanger.classList.add('activeDown');
-        if (filteredData.length === 0) {
-          if (type === 'id') {
-            setSortedData(loadedSortedDataId);
-            changeCurrentData(loadedSortedDataId);
-            return;
-          }
-          setSortedData(loadedSortedData);
-          changeCurrentData(loadedSortedData);
-        } else {
-          if (type === 'id') {
-            setSortedData(filteredSortedDataId);
-            changeCurrentData(filteredSortedDataId);
-            return;
-          }
-          setSortedData(filteredSortedData);
-          changeCurrentData(filteredSortedData);
-        }
-        return;
-      }
-      if (typeOfSorting === 'highToLow') {
-        const loadedSortedDataId = loadedData
-          .slice()
-          .sort((a, b) => a[type] - b[type])
-          .reverse();
-        const filteredSortedDataId = filteredData
-          .slice()
-          .sort((a, b) => a[type] - b[type])
-          .reverse();
-        const loadedSortedData = loadedData
-          .slice()
-          .sort((a, b) => {
-            if (a[type] < b[type]) return -1;
-            if (a[type] < b[type]) return 1;
-          })
-          .reverse();
-        const filteredSortedData = filteredData
-          .slice()
-          .sort((a, b) => {
-            if (a[type] < b[type]) return -1;
-            if (a[type] < b[type]) return 1;
-          })
-          .reverse();
-        setTypeOfSorting('lowToHigh');
-        classChanger.classList.remove('activeDown');
-        classChanger.classList.add('activeUp');
-        if (filteredData.length === 0) {
-          if (type === 'id') {
-            setSortedData(loadedSortedDataId);
-            changeCurrentData(loadedSortedDataId);
-            return;
-          }
-          setSortedData(loadedSortedData);
-          changeCurrentData(loadedSortedData);
-        } else {
-          if (type === 'id') {
-            setSortedData(filteredSortedDataId);
-            changeCurrentData(filteredSortedDataId);
-          }
-          setSortedData(filteredSortedData);
-          changeCurrentData(filteredSortedData);
-        }
-      }
-      if (typeOfSorting === 'lowToHigh') {
-        setTypeOfSorting('none');
-        setSortedData([]);
-        document.querySelectorAll('.sorting').forEach((v) => (v.className = 'sorting disabled'));
-        if (filteredData.length === 0) {
-          changeCurrentData(loadedData);
-        } else {
-          changeCurrentData(filteredData);
-        }
-      }
-    };
-    console.log(type);
     setLastType(type.id);
     const classChanger = type.querySelector('div');
     if (lastType === type.id) {
-      startSorting(type.id, classChanger, false);
+      sortingFunction(type.id, classChanger, false);
       return;
     }
     if (lastType !== type.id || lastType.length === 0) {
       document.querySelectorAll('.sorting').forEach((v) => (v.className = 'sorting disabled'));
       setSortedData([]);
-      startSorting(type.id, classChanger, true);
+      sortingFunction(type.id, classChanger, true);
       return;
     }
   };
@@ -170,6 +178,7 @@ export default function App({ loadedData }) {
         setTypeOfSorting={setTypeOfSorting}
         setSortedData={setSortedData}
       />
+      <DataAddForm setLoadedData={setLoadedData} loadedData={loadedData} />
       <div className="Table">
         <div className="THeading">
           <div className="TRow">

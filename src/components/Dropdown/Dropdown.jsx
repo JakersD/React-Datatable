@@ -6,26 +6,26 @@ const Dropdown = ({ currentUser, setOpen, setCurrentUser }) => {
     <OutsideTracker setOpen={setOpen} setCurrentUser={setCurrentUser} ClassName="dropdown-userInfo">
       <div>
         <h3 className="userInfo-header">
-          <p>Выбран пользователь:</p>
+          <p>Selected user:</p>
           <b>
             {currentUser.firstName} {currentUser.lastName}
           </b>
         </h3>
-        <p className="userInfo-description">Описание:</p>
-        <textarea cols="30" rows="10" value={currentUser.description} readOnly></textarea>
+        <p className="userInfo-description">Description:</p>
+        <textarea cols="30" rows="7" value={currentUser.description} readOnly></textarea>
       </div>
       <div>
         <p className="userInfo-address">
-          Адрес проживания: <b>{currentUser.address.streetAddress}</b>
+          Residence address: <b>{currentUser.address.streetAddress}</b>
         </p>
         <p className="userInfo-city">
-          Город: <b>{currentUser.address.city}</b>
+          City: <b>{currentUser.address.city}</b>
         </p>
         <p className="userInfo-state">
-          Провинция/штат: <b>{currentUser.address.state}</b>
+          Province/State: <b>{currentUser.address.state}</b>
         </p>
         <p className="userInfo-zip">
-          Индекс: <b>{currentUser.address.zip}</b>
+          Zip: <b>{currentUser.address.zip}</b>
         </p>
       </div>
     </OutsideTracker>

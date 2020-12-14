@@ -19,11 +19,15 @@ const SearchForm = ({
     );
     if (filtered.length === 0) {
       alert('Ничего не найдено');
+      document.querySelectorAll('.sorting').forEach((v) => (v.className = 'sorting disabled'));
+      setTypeOfSorting('none');
+      setSortedData([]);
       changeCurrentData(dataRow);
       setFilteredData([]);
       setQ('');
       return;
     }
+    document.querySelectorAll('.sorting').forEach((v) => (v.className = 'sorting disabled'));
     setTypeOfSorting('none');
     setSortedData([]);
     setCurrentPage(1);
@@ -43,10 +47,10 @@ const SearchForm = ({
 
   return (
     <div className="searchForm">
-      <h2 className="searchForm-title">Поиск по таблице</h2>
+      <h2 className="searchForm-title">Table search</h2>
       <input type="text" value={Q} onChange={(e) => setQ(e.target.value)} />
-      <button onClick={() => search(loadedData)}>Найти</button>
-      <button onClick={() => clearSearch()}>Очистить поиск</button>
+      <button onClick={() => search(loadedData)}>Search</button>
+      <button onClick={() => clearSearch()}>Clear search</button>
     </div>
   );
 };

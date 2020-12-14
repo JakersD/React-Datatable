@@ -33,7 +33,7 @@ export default function Routing() {
           {loading === 'true' && <Loadingwheel />}
         </div>
       )}
-      {loadedData !== '' && <Datatable loadedData={loadedData} />}
+      {loadedData !== '' && <Datatable loadedData={loadedData} setLoadedData={setLoadedData} />}
     </>
   );
 }
