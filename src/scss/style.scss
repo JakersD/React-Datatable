@@ -9,13 +9,13 @@
 @import '/node_modules/rc-pagination/assets/index.css';
 @import '../components/Dropdown/Dropdown.scss';
 @import '../components/DataAddForm/DataAddForm.scss';
+@import '../components/Paginator/Paginator.scss';
 
 * {
   font-family: 'Montserrat', sans-serif;
 }
 
 body {
-  background-color: #1b2631;
 }
 
 .wrapper {

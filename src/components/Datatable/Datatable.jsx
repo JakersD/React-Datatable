@@ -179,53 +179,53 @@ export default function App({ loadedData, setLoadedData }) {
         setSortedData={setSortedData}
       />
       <DataAddForm setLoadedData={setLoadedData} loadedData={loadedData} />
-      <div className="Table">
-        <div className="THeading">
-          <div className="TRow">
-            <div className="THead">
+      <table className="Table">
+        <thead className="THeading">
+          <tr className="TRow">
+            <td className="THead">
               <div className="THead-wrapper" id={'id'} onClick={(e) => sorting(e.target)}>
                 ID
                 <div className="sorting disabled" id={'id'} />
               </div>
-            </div>
-            <div className="THead">
+            </td>
+            <td className="THead">
               <div className="THead-wrapper" id={'firstName'} onClick={(e) => sorting(e.target)}>
                 Name
                 <div className="sorting disabled" />
               </div>
-            </div>
-            <div className="THead">
+            </td>
+            <td className="THead">
               <div className="THead-wrapper" id={'lastName'} onClick={(e) => sorting(e.target)}>
                 Surname
                 <div className="sorting disabled" />
               </div>
-            </div>
-            <div className="THead">
+            </td>
+            <td className="THead">
               <div className="THead-wrapper" id={'email'} onClick={(e) => sorting(e.target)}>
                 Email
                 <div className="sorting disabled" />
               </div>
-            </div>
-            <div className="THead">
+            </td>
+            <td className="THead">
               <div className="THead-wrapper" id={'phone'} onClick={(e) => sorting(e.target)}>
                 Phone
                 <div className="sorting disabled" />
               </div>
-            </div>
-          </div>
-        </div>
+            </td>
+          </tr>
+        </thead>
         {currentData.map((v, i) => (
-          <div className="TBody" key={i} onClick={() => dropdownUser(v)}>
-            <div className="TRow">
-              <div className="TCell">{v.id}</div>
-              <div className="TCell">{v.firstName}</div>
-              <div className="TCell">{v.lastName}</div>
-              <div className="TCell">{v.email}</div>
-              <div className="TCell">{v.phone}</div>
-            </div>
-          </div>
+          <tbody className="TBody" key={i} onClick={() => dropdownUser(v)}>
+            <tr className="TRow">
+              <td className="TCell">{v.id}</td>
+              <td className="TCell">{v.firstName}</td>
+              <td className="TCell">{v.lastName}</td>
+              <td className="TCell">{v.email}</td>
+              <td className="TCell">{v.phone}</td>
+            </tr>
+          </tbody>
         ))}
-      </div>
+      </table>
       <Pagination
         current={currentPage}
         total={paginateData}
@@ -233,9 +233,7 @@ export default function App({ loadedData, setLoadedData }) {
         onChange={paginationOnChange}
         locale={locale}
       />
-      {open && (
-        <Dropdown currentUser={currentUser} setOpen={setOpen} setCurrentUser={setCurrentUser} />
-      )}
+      {open && <Dropdown currentUser={currentUser} setOpen={setOpen} setCurrentUser={setCurrentUser} />}
     </div>
   );
 }

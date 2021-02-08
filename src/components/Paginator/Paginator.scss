@@ -1,0 +1,26 @@
+.pagination {
+  margin: 50px 0 0 20px;
+  max-width: 400px;
+  .pagination__list {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .pagination__item {
+      text-decoration: none;
+      color: black;
+      width: 20px;
+      height: 20px;
+      text-align: center;
+      padding: 5px;
+      border: 1px solid black;
+      cursor: pointer;
+      .pagination__link {
+        text-decoration: none;
+        color: black;
+      }
+    }
+    .pagination__item_active {
+      background-color: rgb(123, 100, 300);
+    }
+  }
+}

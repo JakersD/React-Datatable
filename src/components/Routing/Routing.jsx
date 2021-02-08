@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Datatable from '../Datatable/Datatable';
+import Paginator from '../Paginator/Paginator';
 import { bigUrl, littleUrl } from '../../helper/url';
 
 import Loadingwheel from './Loadingwheel/Loadingwheel';
@@ -8,18 +9,20 @@ export default function Routing() {
   const [loading, setLoading] = useState('false');
   const [loadedData, setLoadedData] = useState('');
 
-  async function littleData() {
+  const littleData = async () => {
     setLoading('true');
     const res = await fetch(littleUrl);
     setLoadedData(await res.json());
     setLoading('false');
-  }
-  async function bigData() {
+  };
+
+  const bigData = async () => {
     setLoading('true');
     const res = await fetch(bigUrl);
     setLoadedData(await res.json());
     setLoading('false');
-  }
+  };
+
   return (
     <>
       {loadedData === '' && (
@@ -33,7 +36,7 @@ export default function Routing() {
           {loading === 'true' && <Loadingwheel />}
         </div>
       )}
-      {loadedData !== '' && <Datatable loadedData={loadedData} setLoadedData={setLoadedData} />}
+      {loadedData !== '' && <Paginator loadedData={loadedData} setLoadedData={setLoadedData} />}
     </>
   );
 }
