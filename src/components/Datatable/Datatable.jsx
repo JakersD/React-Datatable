@@ -10,11 +10,17 @@ export default function App({ loadedData, setLoadedData }) {
   const [itemsPerPage] = useState(20);
   const [currentData, setCurrentData] = useState([]);
 
+  const [sortState, setSortState] = useState({
+    id: '',
+    direction: 'none',
+    isNum: false,
+  });
+
   useEffect(() => {
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     setCurrentData(loadedData.slice(indexOfFirstItem, indexOfLastItem));
-  }, [currentPage]);
+  }, [currentPage, sortState]);
 
   // const indexOfLastItem = currentPage * itemsPerPage;
   // const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -172,9 +178,79 @@ export default function App({ loadedData, setLoadedData }) {
   //     return;
   //   }
   // };
+  const nextDirection = (prev) => {
+    switch (prev) {
+      case 'none':
+        return 'up';
+      case 'up':
+        return 'down';
+      case 'down':
+        return 'up';
+    }
+  };
+
+  const typeOfSorting = (type, data, id, dir) => {
+    if (dir === 'up') {
+      if (!type) {
+        return data.sort((a, b) => {
+          if (a[id] < b[id]) {
+            return -1;
+          }
+          if (a[id] > b[id]) {
+            return 1;
+          }
+          return 0;
+        });
+      } else {
+        return data.sort((a, b) => a[id] - b[id]);
+      }
+    }
+    if (dir === 'down') {
+      if (!type) {
+        return data.sort((a, b) => {
+          if (a[id] > b[id]) {
+            return -1;
+          }
+          if (a[id] < b[id]) {
+            return 1;
+          }
+          return 0;
+        });
+      } else {
+        return data.sort((a, b) => b[id] - a[id]);
+      }
+    }
+  };
+
+  const changeIcon = (target, direction) => {
+    console.log(direction);
+    target.classList.remove('disabled');
+    if (direction === 'up') {
+      target.classList.remove('activeUp');
+      target.classList.add('activeDown');
+    } else {
+      target.classList.remove('activeDown');
+      target.classList.add('activeUp');
+    }
+  };
+
+  const sorting = (target, isNum) => {
+    if (target.id === sortState.id) {
+      let nextDir = nextDirection(sortState.direction);
+      changeIcon(target.querySelector('div'), nextDir);
+      setLoadedData(typeOfSorting(isNum, loadedData, target.id, nextDir));
+      setSortState({ ...sortState, direction: nextDir });
+      return;
+    }
+    document.querySelectorAll('.sorting').forEach((v) => (v.classList = 'sorting disabled'));
+    changeIcon(target.querySelector('div'), 'up');
+    setLoadedData(typeOfSorting(isNum, loadedData, target.id, 'up'));
+    setSortState({ id: target.id, direction: 'up', isNum: isNum });
+  };
 
   return (
     <div className="wrapper">
+      <SearchForm />
       {/* <SearchForm
         changeCurrentData={changeCurrentData}
         setFilteredData={setFilteredData}
@@ -190,36 +266,31 @@ export default function App({ loadedData, setLoadedData }) {
         <thead className="THeading">
           <tr className="TRow">
             <td className="THead">
-              {/* <div className="THead-wrapper" id={'id'} onClick={(e) => sorting(e.target)}> */}
-              <div className="THead-wrapper" id={'id'}>
+              <div className="THead-wrapper" id={'id'} onClick={(e) => sorting(e.target, true)}>
                 ID
-                <div className="sorting disabled" id={'id'} />
+                <div className="sorting disabled" />
               </div>
             </td>
             <td className="THead">
-              {/* <div className="THead-wrapper" id={'firstName'} onClick={(e) => sorting(e.target)}> */}
-              <div className="THead-wrapper" id={'firstName'}>
+              <div className="THead-wrapper" id={'firstName'} onClick={(e) => sorting(e.target, false)}>
                 Name
                 <div className="sorting disabled" />
               </div>
             </td>
             <td className="THead">
-              {/* <div className="THead-wrapper" id={'lastName'} onClick={(e) => sorting(e.target)}> */}
-              <div className="THead-wrapper" id={'lastName'}>
+              <div className="THead-wrapper" id={'lastName'} onClick={(e) => sorting(e.target, false)}>
                 Surname
                 <div className="sorting disabled" />
               </div>
             </td>
             <td className="THead">
-              {/* <div className="THead-wrapper" id={'email'} onClick={(e) => sorting(e.target)}> */}
-              <div className="THead-wrapper" id={'email'}>
+              <div className="THead-wrapper" id={'email'} onClick={(e) => sorting(e.target, false)}>
                 Email
                 <div className="sorting disabled" />
               </div>
             </td>
             <td className="THead">
-              {/* <div className="THead-wrapper" id={'phone'} onClick={(e) => sorting(e.target)}> */}
-              <div className="THead-wrapper" id={'phone'}>
+              <div className="THead-wrapper" id={'phone'} onClick={(e) => sorting(e.target, false)}>
                 Phone
                 <div className="sorting disabled" />
               </div>
