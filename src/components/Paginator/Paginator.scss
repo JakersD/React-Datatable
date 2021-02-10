@@ -1,26 +1,29 @@
 .pagination {
-  margin: 50px 0 0 20px;
-  max-width: 400px;
+  margin: 20px auto;
+  max-width: 350px;
   .pagination__list {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     .pagination__item {
+      margin-right: 10px;
       text-decoration: none;
-      color: black;
       width: 20px;
       height: 20px;
       text-align: center;
       padding: 5px;
-      border: 1px solid black;
+      border: 1px solid #999;
       cursor: pointer;
+      &:last-child {
+        margin: 0;
+      }
       .pagination__link {
         text-decoration: none;
-        color: black;
+        color: #f7dc6f;
       }
     }
     .pagination__item_active {
-      background-color: rgb(123, 100, 300);
+      background-color: #6c8bad;
     }
   }
 }

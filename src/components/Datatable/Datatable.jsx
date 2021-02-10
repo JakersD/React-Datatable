@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Dropdown from '../Dropdown/Dropdown';
 import SearchForm from '../Searchform/SearchForm';
@@ -6,9 +6,11 @@ import DataAddForm from '../DataAddForm/DataAddForm';
 import Paginator from '../Paginator/Paginator';
 
 export default function App({ loadedData, setLoadedData }) {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(20);
-  const [currentData, setCurrentData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1); //Текущая страница для показа
+  const [itemsPerPage] = useState(20); //Количество данных на страницу
+  const [currentData, setCurrentData] = useState([]); //Отображение данных на странице
+  const [paginatorActiveIndex, setPaginatorActiveIndex] = useState(0); //Выделение активной страницы пагинатора
+  const [filteredData, setFilteredData] = useState([]); //Отфильтрованные данные
 
   const [sortState, setSortState] = useState({
     id: '',
@@ -19,8 +21,12 @@ export default function App({ loadedData, setLoadedData }) {
   useEffect(() => {
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    if (filteredData.length !== 0) {
+      setCurrentData(filteredData.slice(indexOfFirstItem, indexOfLastItem));
+      return;
+    }
     setCurrentData(loadedData.slice(indexOfFirstItem, indexOfLastItem));
-  }, [currentPage, sortState]);
+  }, [currentPage, sortState, filteredData]);
 
   // const indexOfLastItem = currentPage * itemsPerPage;
   // const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -223,7 +229,6 @@ export default function App({ loadedData, setLoadedData }) {
   };
 
   const changeIcon = (target, direction) => {
-    console.log(direction);
     target.classList.remove('disabled');
     if (direction === 'up') {
       target.classList.remove('activeUp');
@@ -250,7 +255,13 @@ export default function App({ loadedData, setLoadedData }) {
 
   return (
     <div className="wrapper">
-      <SearchForm />
+      <SearchForm
+        loadedData={loadedData}
+        setSortState={setSortState}
+        setCurrentPage={setCurrentPage}
+        setActiveIndex={setPaginatorActiveIndex}
+        setFilteredData={setFilteredData}
+      />
       {/* <SearchForm
         changeCurrentData={changeCurrentData}
         setFilteredData={setFilteredData}
@@ -310,7 +321,13 @@ export default function App({ loadedData, setLoadedData }) {
           </tbody>
         ))}
       </table>
-      <Paginator loadedData={loadedData} setCurrentPage={setCurrentPage} itemsPerPage={itemsPerPage} />
+      <Paginator
+        loadedData={filteredData.length === 0 ? loadedData : filteredData}
+        setCurrentPage={setCurrentPage}
+        itemsPerPage={itemsPerPage}
+        activeIndex={paginatorActiveIndex}
+        setActiveIndex={setPaginatorActiveIndex}
+      />
       {/* {open && <Dropdown currentUser={currentUser} setOpen={setOpen} setCurrentUser={setCurrentUser} />} */}
     </div>
   );

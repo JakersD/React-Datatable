@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { nanoid } from 'nanoid';
 
-const Paginator = ({ loadedData, setCurrentPage, itemsPerPage }) => {
+const Paginator = ({ loadedData, setCurrentPage, itemsPerPage, activeIndex, setActiveIndex }) => {
   const [pageNumbers, setPageNumbers] = useState([]);
   const [pagesToShow, setPagesToShow] = useState([]);
-  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
     let arr = [];
@@ -18,7 +17,7 @@ const Paginator = ({ loadedData, setCurrentPage, itemsPerPage }) => {
     }
     setPagesToShow([1, 2, 3, 4, 5, 6, '...', arr[arr.length - 1]]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [loadedData]);
 
   const paginate = (num, index) => {
     if (typeof num === 'string') return;
@@ -31,12 +30,15 @@ const Paginator = ({ loadedData, setCurrentPage, itemsPerPage }) => {
     setCurrentPage(num);
     if (num <= 4) {
       setPagesToShow([1, 2, 3, 4, 5, 6, '...', last]);
-      setActiveIndex(index);
+      num === 4 ? setActiveIndex(3) : setActiveIndex(index);
       return;
     }
     if (last - num <= 4) {
       setPagesToShow([1, '...', last - 5, last - 4, last - 3, last - 2, last - 1, last]);
-      index === 8 ? setActiveIndex(7) : setActiveIndex(index);
+      index === 8 ? setActiveIndex(7) : setActiveIndex(index - 2);
+      if (pagesToShow.length === 8) {
+        setActiveIndex(index);
+      }
       return;
     }
     let arrNumber = [num - 2, num - 1, num, num + 1, num + 2];
