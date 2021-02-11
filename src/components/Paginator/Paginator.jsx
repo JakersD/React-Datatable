@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { nanoid } from 'nanoid';
 
 const Paginator = ({ loadedData, setCurrentPage, itemsPerPage, activeIndex, setActiveIndex }) => {
   const [pageNumbers, setPageNumbers] = useState([]);
@@ -51,11 +50,11 @@ const Paginator = ({ loadedData, setCurrentPage, itemsPerPage, activeIndex, setA
       <ul className="pagination__list">
         {pagesToShow.map((number, i) => (
           <li
-            key={nanoid()}
+            key={i / 5}
             className={`pagination__item ${activeIndex === i ? 'pagination__item_active' : ''}`}
             onClick={() => paginate(number, i)}
           >
-            <a href="!#" className="pagination__link" key={nanoid()}>
+            <a href="!#" className="pagination__link" key={i / 2}>
               {number}
             </a>
           </li>

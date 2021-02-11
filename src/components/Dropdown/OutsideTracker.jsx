@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-function useOutsideTracker(ref, setOpen, setCurrentUser) {
+const useOutsideTracker = (ref, setOpen, setCurrentUser) => {
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (ref.current && !ref.current.contains(event.target)) {
@@ -12,8 +12,9 @@ function useOutsideTracker(ref, setOpen, setCurrentUser) {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ref]);
-}
+};
 
 const OutsideTracker = ({ children, setOpen, setCurrentUser, ClassName }) => {
   const wrapperRef = useRef(null);

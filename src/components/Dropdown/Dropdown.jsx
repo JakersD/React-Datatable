@@ -6,10 +6,12 @@ const Dropdown = ({ currentUser, setOpen, setCurrentUser }) => {
     <OutsideTracker setOpen={setOpen} setCurrentUser={setCurrentUser} ClassName="dropdown-userInfo">
       <div>
         <h3 className="userInfo-header">
-          <p>Selected user:</p>
-          <b>
-            {currentUser.firstName} {currentUser.lastName}
-          </b>
+          <p>
+            User:{' '}
+            <b>
+              {currentUser.firstName} {currentUser.lastName}
+            </b>
+          </p>
         </h3>
         <p className="userInfo-description">Description:</p>
         <textarea cols="30" rows="7" value={currentUser.description} readOnly></textarea>
