@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Dropdown from '../Dropdown/Dropdown';
 import SearchForm from '../Searchform/SearchForm';
 import DataAddForm from '../DataAddForm/DataAddForm';
-import Paginator from '../Paginator/Paginator';
+import Pagination from '../Pagination/Pagination';
 
 export default function App({ loadedData, setLoadedData }) {
   const [currentPage, setCurrentPage] = useState(1); //Текущая страница для показа
@@ -184,7 +184,7 @@ export default function App({ loadedData, setLoadedData }) {
           </tbody>
         ))}
       </table>
-      <Paginator
+      <Pagination
         loadedData={filteredData.length ? filteredData : loadedData}
         setCurrentPage={setCurrentPage}
         itemsPerPage={itemsPerPage}

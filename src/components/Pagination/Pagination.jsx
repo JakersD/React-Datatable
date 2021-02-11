@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const Paginator = ({ loadedData, setCurrentPage, itemsPerPage, activeIndex, setActiveIndex }) => {
+const Pagination = ({ loadedData, setCurrentPage, itemsPerPage, activeIndex, setActiveIndex }) => {
   const [pageNumbers, setPageNumbers] = useState([]);
   const [pagesToShow, setPagesToShow] = useState([]);
 
@@ -64,4 +64,4 @@ const Paginator = ({ loadedData, setCurrentPage, itemsPerPage, activeIndex, setA
   );
 };
 
-export default Paginator;
+export default Pagination;
