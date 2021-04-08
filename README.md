@@ -1,5 +1,5 @@
 ## This is a training project on creating a Datatable in React
-Datatable has implemented with pagination, sorting, filtering, sorting, searching, adding new users, and dropdown with more info.
+Datatable has implemented with pagination, sorting, filtering, searching, adding new users, and dropdown with more info.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
